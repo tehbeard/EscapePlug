@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
@@ -19,7 +20,9 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.tulonsae.mc.util.Log;
 
@@ -42,13 +45,14 @@ public class JumpGateComponent extends AbstractComponent implements CommandExecu
     Map<String,JumpGate> jumpgates = new HashMap<String, JumpGate>();
 
     SessionStore<JumpGateSession> sessions = new SessionStore<JumpGateSession>();
+    File file;
 
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
-        File f = new File(plugin.getDataFolder(),"jumpgates.yml");
+        file = new File(plugin.getDataFolder(),"jumpgates.yml");
         YamlConfiguration config = new YamlConfiguration();
         try {
-            config.load(f);
+            config.load(file);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -70,10 +74,15 @@ public class JumpGateComponent extends AbstractComponent implements CommandExecu
             //Bukkit.getWorld(w);
         }
 
-        for(String key : config.getConfigurationSection("jumpgates").getKeys(false)){
-            JumpGate jg = new JumpGate(config.getConfigurationSection("jumpgates").getConfigurationSection(key));
-            jumpgates.put(key,jg);
-            cache.addEntry(jg.getCuboid(), jg);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getComponentManager().registerCommands(this);
+
+        if(config.contains("jumpgates")){
+            for(String key : config.getConfigurationSection("jumpgates").getKeys(false)){
+                JumpGate jg = new JumpGate(config.getConfigurationSection("jumpgates").getConfigurationSection(key));
+                jumpgates.put(key,jg);
+                cache.addEntry(jg.getCuboid(), jg);
+            }
         }
 
         return true;
@@ -81,7 +90,35 @@ public class JumpGateComponent extends AbstractComponent implements CommandExecu
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
+
+        YamlConfiguration config = new YamlConfiguration();
+
+        try {
+            config.load(file);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InvalidConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        config.set("jumpgates", null);
+        config.createSection("jumpgates");
+        for(JumpGate jg : jumpgates.values()){
+            jg.save(config.getConfigurationSection("jumpgates"));
+        }
+
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
 
     }
 
@@ -106,8 +143,8 @@ public class JumpGateComponent extends AbstractComponent implements CommandExecu
             }
             return true;
         }
-        
-        
+
+
 
         if(!sessions.hasSession(p.getName())){sender.sendMessage("Not in jumpgate mode");return false;}
 
@@ -122,7 +159,7 @@ public class JumpGateComponent extends AbstractComponent implements CommandExecu
             }
             return true;
         }
-        
+
         if(subcmd.equalsIgnoreCase("make")){
             if(args.length!=2){
                 return false;
@@ -147,35 +184,62 @@ public class JumpGateComponent extends AbstractComponent implements CommandExecu
             if(args.length!=2){
                 return false;
             }
-            
+
             if(!jumpgates.containsKey(args[1])){
                 sender.sendMessage("gate not found");
                 return true;
             }
-            
+
             cache.remove(jumpgates.get(args[1]));
             jumpgates.remove(args[1]);
             sender.sendMessage("Gate removed");
-            
+
         }
 
         return false;
     }
 
-    
+
+    @EventHandler()
     public void onMove(PlayerMoveEvent event){
-        if(event.isCancelled()){return;}
-        for(CuboidEntry<JumpGate> entry  : cache.getEntries(event.getTo())){
-            if(sessions.hasSession(event.getPlayer().getName())){
-                if(sessions.getSession(event.getPlayer().getName()).isDebugMode()){
-                    event.getPlayer().sendMessage(ChatColor.GOLD + entry.getEntry().getName());
-                    return;
+
+        if(event.isCancelled()==false &&
+                (event.getTo().getBlockX() != event.getFrom().getBlockX() || 
+                event.getTo().getBlockY() != event.getFrom().getBlockY() || 
+                event.getTo().getBlockZ() != event.getFrom().getBlockZ() )){
+            for(CuboidEntry<JumpGate> entry  : cache.getEntries(event.getTo())){
+                if(sessions.hasSession(event.getPlayer().getName())){
+                    if(sessions.getSession(event.getPlayer().getName()).isDebugMode()){
+                        event.getPlayer().sendMessage(ChatColor.GOLD + entry.getEntry().getName());
+                        return;
+                    }
                 }
+                //event.setCancelled(true);
+                event.getPlayer().setNoDamageTicks(20);
+                event.getPlayer().teleport(entry.getEntry().getDestination());
+                return;
             }
-            event.setCancelled(true);
-            event.getPlayer().teleport(entry.getEntry().getDestination());
-            return;
         }
-        
+    }
+
+    @EventHandler
+    public void click(PlayerInteractEvent event){
+        if(!sessions.hasSession(event.getPlayer().getName())){return;}
+        if(event.getPlayer().getItemInHand().getType()!=Material.ARROW){return;}
+
+        switch(event.getAction()){
+        case LEFT_CLICK_BLOCK:
+            sessions.getSession(event.getPlayer().getName()).setV1(event.getClickedBlock().getLocation().toVector());
+            sessions.getSession(event.getPlayer().getName()).setWorld(event.getClickedBlock().getLocation().getWorld().getName());
+            event.getPlayer().sendMessage("Point 1 set");
+            break;
+        case RIGHT_CLICK_BLOCK:
+            sessions.getSession(event.getPlayer().getName()).setV2(event.getClickedBlock().getLocation().toVector());
+            sessions.getSession(event.getPlayer().getName()).setWorld(event.getClickedBlock().getLocation().getWorld().getName());
+            event.getPlayer().sendMessage("Point 2 set");
+            break;
+        }
+        event.setCancelled(true);
+
     }
 }

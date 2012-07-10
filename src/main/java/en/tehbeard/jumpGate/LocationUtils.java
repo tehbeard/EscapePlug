@@ -25,7 +25,7 @@ public class LocationUtils {
         double x    = Double.parseDouble(p[1]);
         double y    = Double.parseDouble(p[2]);
         double z    = Double.parseDouble(p[3]);
-        float yaw   = Float.parseFloat(p[4]);
+        float yaw   = Float.parseFloat(p[5]);
         float pitch = Float.parseFloat(p[4]);
         
         return new Location(world, x, y, z, yaw, pitch);

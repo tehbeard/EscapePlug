@@ -1,4 +1,6 @@
 plugin:
+    jumpgate:
+        enabled: false
     areablock:
         enabled: true
     antislime:

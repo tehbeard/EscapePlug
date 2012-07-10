@@ -43,8 +43,8 @@ public class Cuboid {
 	}
 
 	public void setCuboid(Vector c1,Vector c2,String world){
-		v1=c1;
-		v2=c2;
+		v1=Vector.getMinimum(c1, c2);
+		v2=Vector.getMaximum(c1, c2);
 		this.world = world;
 	}
 

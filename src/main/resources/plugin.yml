@@ -3,6 +3,10 @@ main: net.escapecraft.escapePlug.EscapePlug
 version: ${project.version}
 softdepend: [DroxPerms, BeardStat, HawkEye]
 commands:
+    jumpgate:
+        description: jumpgate controls
+        usage: /<command>
+        permission: escapeplug.jumpgate
     pig-active:
         description: Activate pig punching
         usage: /<command>
@@ -167,4 +171,7 @@ permissions:
     default: op
   escapeplug.areablock:
     description: Use areablock commands
+    default: op
+  escapeplug.jumpgate:
+    description: Use jumpgate commands
     default: op

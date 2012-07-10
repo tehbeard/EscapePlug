@@ -26,6 +26,7 @@ import de.hydrox.who.WhoCommandComponent;
 import en.tehbeard.areablock.AreaBlockComponent;
 import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
+import en.tehbeard.jumpGate.JumpGateComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJousterComponent;
 import en.tehbeard.reserve.ReserveComponent;
@@ -92,6 +93,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(VanishComponent.class);
 		componentManager.addComponent(PortalBlockerComponent.class);
 		componentManager.addComponent(AreaBlockComponent.class);
+		componentManager.addComponent(JumpGateComponent.class);
 		//start components
 		componentManager.startupComponents();
 

@@ -52,7 +52,10 @@ public class SessionStore<T> implements Listener {
 		
 	@EventHandler
 	public void logout(PlayerQuitEvent e){
-		sessions.remove(e.getPlayer().getName());
+		remove(e.getPlayer().getName());
 	}
 	
+	public void remove(String player){
+	    sessions.remove(player);
+	}
 }

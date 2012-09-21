@@ -7,6 +7,9 @@ import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatComponent;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.antixray.AntiXrayComponent;
@@ -130,5 +133,12 @@ public class EscapePlug extends JavaPlugin {
 
 	public boolean isHawkEyeLoaded() {
 	    return hawkEyeLoaded;
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command command,
+	        String label, String[] args) {
+	    sender.sendMessage(ChatColor.RED + "Component associated with this command is not loaded!");
+	    return true;
 	}
 }

@@ -9,6 +9,8 @@ import java.util.Set;
 import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.tulonsae.mc.util.Log;
 
 
@@ -145,6 +147,15 @@ public class ComponentManager{
             if(cd!=null){
                 if(cd.slug().equals(slug)){
                     component.disable();
+                    if(component instanceof Listener){
+                        HandlerList.unregisterAll((Listener) component);
+                    }
+                    BukkitCommand bc = component.getClass().getAnnotation(BukkitCommand.class);
+                    if(bc!=null){
+                        for(String comm : bc.command()){
+                            plugin.getCommand(comm).setExecutor(plugin);
+                        }
+                    }
                     it.remove();
                 }
             }

@@ -137,6 +137,7 @@ public class ComponentManager{
 
 
     public void disableComponent(String slug){
+        if(slug.equals("admin")){return;}//do not unload admin component
         Iterator<AbstractComponent> it = activeComponents.iterator();
         AbstractComponent component;
         while(it.hasNext()){

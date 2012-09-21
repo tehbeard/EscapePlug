@@ -60,6 +60,7 @@ public class AdminComponent extends AbstractComponent implements CommandExecutor
                 return true;
             }
             for(int i = 0;i < pack.size();i++){
+                if(pack.get(i).equals("admin")){continue;}//do not unload admin component
                 compMan.disableComponent(pack.get(i));
                 sender.sendMessage(ChatColor.GOLD + "Disabling Component " + pack.get(i)); 
             }

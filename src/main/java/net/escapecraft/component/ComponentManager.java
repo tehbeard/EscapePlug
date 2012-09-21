@@ -41,7 +41,7 @@ public class ComponentManager{
 	 * Start an individual component
 	 * @param slug
 	 */
-	public void startComponent(String slug,boolean override){
+	public boolean startComponent(String slug,boolean override){
 		Class<? extends AbstractComponent> component = components.get(slug);
 		if(component !=null){
 			ComponentDescriptor cd = component.getAnnotation(ComponentDescriptor.class);
@@ -50,14 +50,15 @@ public class ComponentManager{
 					try {
 						log.info("Enabling " + cd.name() + " " + cd.version());
 						Log compLog = new Log("EscapePlug",cd.name());
-						enableComponent(compLog,component.newInstance());
+						return enableComponent(compLog,component.newInstance());
 					} catch (Exception e) {
-						log.info("COULD NOT START");
+						log.info("Exception occured during enabling component " + slug);
 						e.printStackTrace();
 					} 
 				}
 			}
 		}
+		return false;
 	}
 	
 	/**
@@ -72,10 +73,12 @@ public class ComponentManager{
 	
 	
 
-	private void enableComponent(Log log,AbstractComponent component){
+	private boolean enableComponent(Log log,AbstractComponent component){
 		if(component.enable(log,plugin)){
 			activeComponents.add(component);
+			return true;
 		}
+		return false;
 	}
 	
 	/**

@@ -84,6 +84,7 @@ public class EscapePlug extends JavaPlugin {
 		
 		//start the component manager
 		componentManager = new ComponentManager(this, new Log("EscapePlug"));
+		componentManager.addComponent(AdminComponent.class);
 		componentManager.addComponent(MentorTeleportComponent.class);
 		componentManager.addComponent(ReserveComponent.class);
 		componentManager.addComponent(GameModeToggleComponent.class);
@@ -108,6 +109,7 @@ public class EscapePlug extends JavaPlugin {
 
                 //start components
 		componentManager.startupComponents();
+		
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
         

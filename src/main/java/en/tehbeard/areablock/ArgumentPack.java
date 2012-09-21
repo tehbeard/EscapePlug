@@ -40,7 +40,6 @@ public class ArgumentPack {
         strArgs = new ArrayList<String>();
         this.boolFlags = new HashSet<String>();
         this.flagOptions = new HashMap<String, String>();
-        System.out.println(rawArguments);
         boolean inQuotes = false;
         StringBuilder token = new StringBuilder();
         List<String> tokens = new ArrayList<String>();
@@ -52,16 +51,13 @@ public class ArgumentPack {
                     token.append(c);
                 }else{
                     if(token.length() > 0){
-                        l("" + token.length());
                         tokens.add(token.toString().trim());
                     }
-                    l("adding token");
                     token = new StringBuilder();
                 }
                 ;break;
             case '"':
             inQuotes = !inQuotes;
-            l("Swapping to quote mode " +( inQuotes ?"on":"off"));
             break;
             default: token.append(c);break;
             }
@@ -85,7 +81,6 @@ public class ArgumentPack {
                 }
                 if(inArray(flagOpts, t)){
                     if(it.hasNext()){
-                        l(t);
                         this.flagOptions.put(t, it.next());
                     }
                     continue;
@@ -122,18 +117,5 @@ public class ArgumentPack {
     public String get(int index){
         return strArgs.size() < index ? strArgs.get(index) : "";
     }
-    public static void main(String[] args){
-        String arg = "create";
-        String[] bool = {"a"};
-        String[] opt = {"type","c","d"};
-        ArgumentPack pack = new ArgumentPack(bool, opt,arg);
-
-        System.out.println(pack.strArgs.toString());
-        System.out.println(pack.boolFlags.toString());
-        System.out.println(pack.flagOptions.toString());
-        System.out.println(pack.getOption("d"));
-    }
-    private static void l(String l){
-        //System.out.println(l);
-    }
+    
 }

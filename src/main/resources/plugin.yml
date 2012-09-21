@@ -82,6 +82,9 @@ commands:
     tour:
         description: 
         usage: /<command> [join|leave]
+    escapeplug:
+        description: Controls components
+        usage: /<command>
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

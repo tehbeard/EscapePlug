@@ -19,7 +19,8 @@ public class AdminComponent extends AbstractComponent implements CommandExecutor
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
         compMan = plugin.getComponentManager();
-        return false;
+        plugin.getCommand("escapeplug").setExecutor(this);
+        return true;
     }
 
     @Override
@@ -31,56 +32,48 @@ public class AdminComponent extends AbstractComponent implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command cmd, String lbl,
             String[] args) {
 
-        ArgumentPack pack = new ArgumentPack(new String[] {"e","d","c","l","r"}, new String[] {}, args);
+        ArgumentPack pack = new ArgumentPack(new String[]{"l"}, new String[] {"e","d","c","r"}, args);
 
 
         //enable components
-        if(pack.getFlag("e")){
-            if(pack.size()==0){
-                sender.sendMessage(ChatColor.RED+ "MUST SUPPLY COMPONENTS TO ENSABLE");
-                return true;
+
+        if(pack.getOption("e")!=null){
+
+            String component = pack.getOption("e");
+            if(compMan.startComponent(component, true)){
+                sender.sendMessage(ChatColor.GOLD + "Component " + component + " enabled"); 
             }
-            for(int i = 0;i < pack.size();i++){
-                if(compMan.startComponent(pack.get(i), true)){
-                    sender.sendMessage(ChatColor.GOLD + "Component " + pack.get(i) + " enabled"); 
-                }
-                else
-                {
-                    sender.sendMessage(ChatColor.RED + "ERROR: Component " + pack.get(i) + " was not enabled");
-                }
+            else
+            {
+                sender.sendMessage(ChatColor.RED + "ERROR: Component " + component + " was not enabled");
             }
             return true;
         }
 
 
         //disable components
-        if(pack.getFlag("d")){
-            if(pack.size()==0){
-                sender.sendMessage(ChatColor.RED+ "MUST SUPPLY COMPONENTS TO DISABLE");
-                return true;
-            }
-            for(int i = 0;i < pack.size();i++){
-                if(pack.get(i).equals("admin")){continue;}//do not unload admin component
-                compMan.disableComponent(pack.get(i));
-                sender.sendMessage(ChatColor.GOLD + "Disabling Component " + pack.get(i)); 
-            }
+        if(pack.getOption("d")!=null){
+            String component = pack.getOption("d");
+
+            if(component.equals("admin")){return true;}//do not unload admin component
+            compMan.disableComponent(component);
+            sender.sendMessage(ChatColor.GOLD + "Disabling Component " + component); 
+
             return true;
         }
 
         //reload configs, does not disable plugins
-        if(pack.getFlag("c")){
-            if(pack.size()==0){
-                sender.sendMessage(ChatColor.RED+ "MUST SUPPLY COMPONENTS TO RELOAD CONFIG");
-                return true;
-            }
-            for(int i = 0;i < pack.size();i++){
-                AbstractComponent comp = compMan.getActiveInstance(pack.get(i));
-                if(comp!=null){
-                    sender.sendMessage(ChatColor.GOLD + "Reloading Component " + pack.get(i) +"'s config");
-                    comp.reloadConfig();
-                }
+        if(pack.getOption("c")!=null){
+            String component = pack.getOption("c");
 
+
+            AbstractComponent comp = compMan.getActiveInstance(component);
+            if(comp!=null){
+                sender.sendMessage(ChatColor.GOLD + "Reloading Component " + component +"'s config");
+                comp.reloadConfig();
             }
+
+
             return true;
         }
 
@@ -93,23 +86,19 @@ public class AdminComponent extends AbstractComponent implements CommandExecutor
         }
 
         //reload plugin
-        if(pack.getFlag("r")){
-            if(pack.size()==0){
-                sender.sendMessage(ChatColor.RED+ "MUST SUPPLY COMPONENTS TO RELOAD CONFIG");
-                return true;
+        if(pack.getOption("r")!=null){
+            String component = pack.getOption("r");
+            sender.sendMessage(ChatColor.GOLD + "Disabling Component " + component);
+            compMan.disableComponent(component);
+            if(compMan.startComponent(component, true)){
+                sender.sendMessage(ChatColor.GOLD + "Component " + component + " enabled"); 
             }
-            for(int i = 0;i < pack.size();i++){
-                sender.sendMessage(ChatColor.GOLD + "Disabling Component " + pack.get(i));
-                compMan.disableComponent(pack.get(i));
-                if(compMan.startComponent(pack.get(i), true)){
-                    sender.sendMessage(ChatColor.GOLD + "Component " + pack.get(i) + " enabled"); 
-                }
-                else
-                {
-                    sender.sendMessage(ChatColor.RED + "ERROR: Component " + pack.get(i) + " was not enabled");
-                }
+            else
+            {
+                sender.sendMessage(ChatColor.RED + "ERROR: Component " + component + " was not enabled");
+            }
 
-            }
+
             return true;
         }
 

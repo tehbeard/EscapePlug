@@ -77,11 +77,50 @@ public class ComponentManager{
 			activeComponents.add(component);
 		}
 	}
+	
+	/**
+	 * Returns an instance of this component that is active, or null if not loaded
+	 * @param slug
+	 * @return
+	 */
+	public AbstractComponent getActiveInstance(String slug){
+	    Iterator<AbstractComponent> it = activeComponents.iterator();
+        AbstractComponent component;
+        while(it.hasNext()){
+            component = it.next();
+            ComponentDescriptor cd = component.getClass().getAnnotation(ComponentDescriptor.class);
+            if(cd!=null){
+                if(cd.slug().equals(slug)){
+                    return component;
+                }
+            }
+        }
+        return null;
+	}
+	
+	
+	/**
+	 * Reloads all configs
+	 * @param slug
+	 * @return
+	 */
+	public void reloadAllComponentConfig(){
+	    Iterator<AbstractComponent> it = activeComponents.iterator();
+        AbstractComponent component;
+        while(it.hasNext()){
+            component = it.next();
+            component.reloadConfig();
+        }
+	    
+	}
+	
 
 	/**
 	 * Disable an active component
 	 * @param slug component to disable
 	 */
+	
+	
 	public void disableComponent(String slug){
 		Iterator<AbstractComponent> it = activeComponents.iterator();
 		AbstractComponent component;

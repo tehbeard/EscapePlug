@@ -103,7 +103,7 @@ commands:
         permission: escapeplug.kit.command.kitadmin
         usage: /<command> [make|del] kitname [cooldown]
     bungeejump:
-        description: Allows you to leap tall servers 
+        description: Allows you to leap tall servers in a single bound
         usage: /<command> [server]
 permissions:
   escapeplug.*:

@@ -13,6 +13,7 @@ import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.antixray.AntiXrayComponent;
 import org.tulonsae.mc.util.Log;
 
+import com.tehbeard.bungeejump.BungeeJumpComponent;
 import com.tehbeard.kit.EscapeKitComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
@@ -106,6 +107,8 @@ public class EscapePlug extends JavaPlugin {
 
         componentManager.addComponent(TourBusComponent.class);
         componentManager.addComponent(EscapeKitComponent.class);
+        
+        componentManager.addComponent(BungeeJumpComponent.class);
 
         // start components
         componentManager.startupComponents();

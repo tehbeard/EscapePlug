@@ -1,4 +1,6 @@
 plugin:
+    bungeejump:
+        enabled: false
     kitplugin:
         enabled: true
     areablock:

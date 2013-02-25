@@ -102,6 +102,9 @@ commands:
         description: manages kits
         permission: escapeplug.kit.command.kitadmin
         usage: /<command> [make|del] kitname [cooldown]
+    bungeejump:
+        description: Allows you to leap tall servers 
+        usage: /<command> [server]
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

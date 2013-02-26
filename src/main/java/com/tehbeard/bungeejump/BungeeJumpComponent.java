@@ -23,6 +23,7 @@ import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -53,6 +54,7 @@ public class BungeeJumpComponent extends AbstractComponent implements CommandExe
 	@Override
 	public boolean enable(Log log, EscapePlug plugin) {
 		this.plugin = plugin;
+		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
 		plugin.getComponentManager().registerCommands(this);
 		return true;
 	}

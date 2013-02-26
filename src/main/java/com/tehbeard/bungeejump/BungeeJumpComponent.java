@@ -53,6 +53,7 @@ public class BungeeJumpComponent extends AbstractComponent implements CommandExe
 	@Override
 	public boolean enable(Log log, EscapePlug plugin) {
 		this.plugin = plugin;
+		plugin.getComponentManager().registerCommands(this);
 		return true;
 	}
 

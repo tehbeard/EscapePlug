@@ -14,6 +14,7 @@ import org.tulonsae.antixray.AntiXrayComponent;
 import org.tulonsae.mc.util.Log;
 
 import com.tehbeard.kit.EscapeKitComponent;
+import com.tehbeard.pasta.PastaComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
 import uk.co.oliwali.HawkEye.HawkEye;
@@ -106,6 +107,7 @@ public class EscapePlug extends JavaPlugin {
 
         componentManager.addComponent(TourBusComponent.class);
         componentManager.addComponent(EscapeKitComponent.class);
+        componentManager.addComponent(PastaComponent.class);
 
         // start components
         componentManager.startupComponents();

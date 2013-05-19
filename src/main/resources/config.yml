@@ -1,4 +1,6 @@
 plugin:
+    pasta:
+        enabled: true
     kitplugin:
         enabled: true
     areablock:

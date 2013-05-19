@@ -3,6 +3,9 @@ main: net.escapecraft.escapePlug.EscapePlug
 version: ${project.version}
 softdepend: [DroxPerms, BeardStat, HawkEye]
 commands:
+    pasta:
+        description: Pasta paste
+        usage: /<command>
     pig-active:
         description: Activate pig punching
         usage: /<command>

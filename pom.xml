@@ -55,6 +55,11 @@
         <scope>system</scope>
         <systemPath>${project.basedir}/lib/HawkEye.jar</systemPath>
     </dependency>
+    <dependency>
+    	<groupId>org.bukkit</groupId>
+    	<artifactId>craftbukkit</artifactId>
+    	<version>1.5.2-R0.2-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <properties>
@@ -78,4 +83,3 @@
     </extensions>
   </build>
 </project>
->>>>>>> a74aab5606ded43e8c907a26e2aff024dd0ee74d

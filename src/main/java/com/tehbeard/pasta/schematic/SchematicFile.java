@@ -110,7 +110,7 @@ public class SchematicFile {
         height = tag.getShort("Height");
         length = tag.getShort("Length");
 
-        SchematicDataRegistry.logger().config("Schematic loaded, [" + width + ", " + height + ", " + length + "]");
+        SchematicDataRegistry.logger().info("Schematic loaded, [" + width + ", " + height + ", " + length + "]");
 
         resetArrays();
 
@@ -123,7 +123,7 @@ public class SchematicFile {
         byte[] addBlocks = new byte[0];
         //Check and load Additional blocks array
         if(tag.hasKey("AddBlocks")){
-            SchematicDataRegistry.logger().config("Extended block data detected!");
+            SchematicDataRegistry.logger().info("Extended block data detected!");
             addBlocks = tag.getByteArray("AddBlocks");
         }
         

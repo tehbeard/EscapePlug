@@ -1,7 +1,6 @@
 package com.tehbeard.pasta.schematic;
 
-import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -9,7 +8,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Material;
 
-import net.minecraft.server.v1_5_R3.Block;
 import net.minecraft.server.v1_5_R3.NBTTagCompound;
 
 import com.tehbeard.pasta.schematic.data.RotationHandler;
@@ -33,12 +31,16 @@ public class SchematicDataRegistry {
     //BEGIN FORGE MOD SECTION
     public static final boolean DEBUG_MODE = true;
 
-    private static Logger logger = Logger.getLogger("Pasta");
+    private static Logger logger = Logger.getLogger("Minecraft");
 
     public static Logger logger(){
         return logger;
     }
 
+    static{
+        logger.setFilter(null);
+        logger.setLevel(Level.ALL);
+    }
     //END FORGE MOD SECTION
 
 

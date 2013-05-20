@@ -15,9 +15,8 @@ public class OriginWorker extends ISchematicWorker {
     public SchVector modifyOffsetVector(SchVector vector,
             SchematicWorker worker) {
         WorldEditVectorExtension ve = worker.getSchematic().getExtension(WorldEditVectorExtension.class);
-        if(ve==null){return vector;}
-        
-        vector.add(ve.getOffset());
+        if(ve==null){System.out.println("NO ORIGIN FOUND");return vector;}
+        vector.add(ve.getOrigin());
         return vector;
     }
     

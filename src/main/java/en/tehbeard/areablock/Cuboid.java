@@ -103,7 +103,7 @@ public class Cuboid {
 	    return (v3.getBlockX()+1) * (v3.getBlockY()+1) *  (v3.getBlockZ()+1);  
 	}
 	
-	public int getMaxPly(){
-	    return maxPly;
-	}
+    public int getMaxPly(){
+        return maxPly;
+    }
 }

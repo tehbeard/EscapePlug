@@ -36,7 +36,7 @@ public class RotateWorker extends ISchematicWorker{
 
             b_meta = ((SchematicRotationHandler)handler).rotateData(worker.getSchematic(), sx, sy, sz, b_id, b_meta, rotations);
 
-            SchematicDataRegistry.logger().config("Transformer found for " + b_id + " : " + old_meta + " -> " + b_meta);
+            SchematicDataRegistry.logger().info("Transformer found for " + b_id + " : " + old_meta + " -> " + b_meta);
         }
         return new int[]{b_id,b_meta};
     }

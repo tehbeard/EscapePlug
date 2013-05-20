@@ -121,8 +121,27 @@ public class SchematicWorker {
                         for(ISchematicWorker worker : workers){
                             te = worker.transformTileEntity(te, this);
                         }
-                        SchematicDataRegistry.logger().config("Initialising Tile Entity " + te.toString());
-                        world.setTileEntity(v.getX(), v.getY(), v.getZ(),te);
+                        SchematicDataRegistry.logger().info("Initialising Tile Entity " + te.toString() + "@[" + v.getX() +", "+ v.getY() +", "+ v.getZ() +"]");
+
+                        world.s(v.getX(), v.getY(), v.getZ());//REMOVE TILE ENTITY - SIG BELOW
+//                        TileEntity tileentity = this.getTileEntity(i, j, k);
+//
+//                        if (tileentity != null && this.N) {
+//                            tileentity.w_();
+//                            this.a.remove(tileentity);
+//                        } else {
+//                            if (tileentity != null) {
+//                                this.a.remove(tileentity);
+//                                this.tileEntityList.remove(tileentity);
+//                            }
+//
+//                            Chunk chunk = this.getChunkAt(i >> 4, k >> 4);
+//
+//                            if (chunk != null) {
+//                                chunk.f(i & 15, j, k & 15);
+//                            }
+//                        }
+                        world.setTileEntity(v.getX(), v.getY(), v.getZ(),te);//ADD TILE ENTITY
                         world.setData(v.getX(), v.getY(), v.getZ(), b_meta,2);//Fix container blocks being derpy
                     }
                 }   
@@ -169,7 +188,7 @@ public class SchematicWorker {
 
                         b_meta = ((SchematicRotationHandler)handler).rotateData(file, x, y, z, b_id, b_meta, rotations);
 
-                        SchematicDataRegistry.logger().config("Transformer found for " + b_id + " : " + old_meta + " -> " + b_meta);
+                        SchematicDataRegistry.logger().info("Transformer found for " + b_id + " : " + old_meta + " -> " + b_meta);
                     }
 
                     if(b_id != maskId &&
